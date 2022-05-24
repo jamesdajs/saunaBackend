@@ -1,4 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { Data } from "./Data"
 @Entity()
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -9,4 +10,6 @@ export class User extends BaseEntity {
     createAt : Date
     @UpdateDateColumn()
     updateAt : Date
+    @OneToOne(() => Data, (data) => data.user)
+    data: Data
 }

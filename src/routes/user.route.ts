@@ -1,10 +1,11 @@
-import express  from "express";
-import * as service from "../services/userService"
-const route = express.Router()
+import {Router}  from "express";
+import * as userService from "../services/user.service"
+import * as dataService from "../services/data.service"
+const route = Router()
 
 route.get("/",async (req,res)=>{
     try {
-        const user = await service.getUsers()
+        const user = await userService.getUsers()
         res.status(200).json(user)
     } catch (error) {
         if (error instanceof Error) 
@@ -13,7 +14,7 @@ route.get("/",async (req,res)=>{
 })
 route.get("/:id",async (req,res)=>{
     try {
-        const user = await service.findUser(+req.params.id)
+        const user = await userService.findUser(+req.params.id)
         if (user)
             res.status(200).json(user)
         else res.status(401).json({message:"user not found"})
@@ -22,20 +23,23 @@ route.get("/:id",async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
+/*
 .post("/", async (req,res)=>{
     try {
         
-        const user = await service.createUser(req.body)
-        res.status(200).json(user)
+        const user = await userService.createUser(req.body.user)
+        req.body.data.user = user
+        const {username} = await dataService.createData(req.body.data)
+        res.status(200).json({user,username})
     } catch (error) {
         if (error instanceof Error) 
             res.status(500).json({message:error.message})
     }
-})
+})*/
 .put("/:id", async (req,res)=>{
     try {
         
-        const user = await service.updateUser(+req.params.id,req.body)
+        const user = await userService.updateUser(+req.params.id,req.body)
         if (user)
             res.status(200).json(user)
         else res.status(401).json({message:"user not found"})
@@ -47,7 +51,7 @@ route.get("/:id",async (req,res)=>{
 .delete("/:id", async (req,res)=>{
     try {
         
-        const user = await service.deleteUser(+req.params.id)
+        const user = await userService.deleteUser(+req.params.id)
         if (user)
             res.status(200).json(user)
         else res.status(401).json({message:"user not found"})

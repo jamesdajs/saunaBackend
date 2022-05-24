@@ -3,7 +3,12 @@ export const getUsers = async ()=>{
     return await User.find()
 }
 export const findUser = async (id:number)=>{
-    return await User.findOneBy({id})
+    return await User.findOne({
+        relations: {
+            data: true,
+        },
+        where:{id}
+    })
 }
 export const createUser = async (data:User)=>{
     const user = new User()
