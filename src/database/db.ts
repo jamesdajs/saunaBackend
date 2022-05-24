@@ -1,6 +1,8 @@
 import {DataSource} from "typeorm"
+import { Customer } from "../entities/Customer"
 import { Data } from "../entities/Data"
-import {User} from "../entities/User"
+import { Role } from "../entities/Role"
+import { User } from "../entities/User"
 export const AppDataSource = new DataSource({
     type: "postgres",
     host: process.env.DB_HOST || "localhost",
@@ -9,8 +11,8 @@ export const AppDataSource = new DataSource({
     password: process.env.DB_PASSWORD || "postgres",
     database: process.env.DB_NAME || "template",
     synchronize: true,
-    logging: true,
-    entities: [User,Data],
+    //logging: true,
+    entities: [User,Data,Customer,Role],
     //subscribers: [],
     //migrations: [],
 })

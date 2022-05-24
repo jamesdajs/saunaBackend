@@ -6,6 +6,7 @@ export const findUser = async (id:number)=>{
     return await User.findOne({
         relations: {
             data: true,
+            role:true
         },
         where:{id}
     })
