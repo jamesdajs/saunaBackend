@@ -1,5 +1,6 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 import { Data } from "./Data"
+import { Entry } from "./Entry"
 import { Role } from "./Role"
 @Entity()
 export class User extends BaseEntity {
@@ -15,4 +16,6 @@ export class User extends BaseEntity {
     data: Data
     @ManyToOne(()=> Role,(role)=>role.users)
     role :Role
+    @OneToMany(() => Entry, (entry) => entry.user)
+    entries: [Entry]
 }
