@@ -19,7 +19,7 @@ export const updateCustomer = async (id:number,data:Customer)=>{
     if (user){
         await Customer.update({ id }, data)
         return await findCustomer(id)
-    }else throw new Error("usuario no encontrado")
+    }else throw new Error("usuario no encontrado" )
 }
 export const deleteCustomer = async (id:number)=>{
     let user = await findCustomer(id)

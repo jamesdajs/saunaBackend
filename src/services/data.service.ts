@@ -7,7 +7,9 @@ export const getDatas = async ()=>{
 export const findData = async (id:number)=>{
     return await Data.findOne({
         relations: {
-            user: true,
+            user: {
+                role:true
+            },
         },
         where:{id}
     })
@@ -38,13 +40,17 @@ export const deleteData = async (id:number)=>{
 export const loggin = async (body:Data)=>{
     let data = await Data.findOne({
         relations: {
-            user: true,
+            user: {
+                role:true
+            },
         },
         where:{username:body.username}
     })
     if (data){
         if(await validatePassword(body.password,data.password)){
-            const token = jwt.sign(data.user.id+"",process.env.SECRET_KEY || "ejemplo")
+            console.log(data);
+            
+            const token = jwt.sign({id:data.user.id,role:data.user.role.name},process.env.SECRET_KEY || "ejemplo",{expiresIn:60*60*24})
             return {user:data.user,token}
         }else{
             throw new Error("password incorrecto")

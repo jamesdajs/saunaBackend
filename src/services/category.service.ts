@@ -9,22 +9,21 @@ export const findCategory = async (id:number)=>{
     })
 }
 export const createCategory = async (data:Category)=>{
-    const user = new Category()
-    user.name = data.name
-    await user.save()
-    return user
+    const categoty = await Category.create(data)
+    await categoty.save()
+    return categoty
 }
 export const updateCategory = async (id:number,data:Category)=>{
-    let user = await findCategory(id)
-    if (user){
+    let categoty = await findCategory(id)
+    if (categoty){
         await Category.update({ id }, data)
         return await findCategory(id)
     }else throw new Error("usuario no encontrado")
 }
 export const deleteCategory = async (id:number)=>{
-    let user = await findCategory(id)
-    if (user){
+    let categoty = await findCategory(id)
+    if (categoty){
         await Category.delete({ id })
-        return user
+        return categoty
     }else throw new Error("usuario no encontrado")
 }

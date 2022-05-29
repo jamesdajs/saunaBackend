@@ -1,6 +1,11 @@
 import {User} from "../entities/User"
 export const getUsers = async ()=>{
-    return await User.find()
+    return await User.find({
+        relations: {
+            data: true,
+            role:true
+        }
+    })
 }
 export const findUser = async (id:number)=>{
     return await User.findOne({

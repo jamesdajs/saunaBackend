@@ -1,6 +1,11 @@
 import express from 'express'
+
 import userRoute from './routes/user.route'
 import authRoute from './routes/auth.route'
+import customerRoute from './routes/customer.route'
+import categoryRoute from './routes/category.route'
+import productRoute from './routes/product.route'
+
 import {AppDataSource} from "./database/db"
 import dotenv from "dotenv"
 import "reflect-metadata"
@@ -16,6 +21,8 @@ app.get("/ping",(req,res)=>{
 })
 app.use("/api/users",userRoute)
 app.use("/api/auth",authRoute)
+app.use("/api/customers",customerRoute)
+app.use("/api/products",productRoute)
 const main = async ()=>{
     try {
         await AppDataSource.initialize()
