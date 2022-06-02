@@ -7,6 +7,8 @@ export class Category extends BaseEntity {
     id : number
     @Column()
     name : string
+    @Column({default:true})
+    state:boolean
     @CreateDateColumn()
     createAt : Date
     @UpdateDateColumn()
