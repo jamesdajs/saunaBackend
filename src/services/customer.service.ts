@@ -9,22 +9,21 @@ export const findCustomer = async (id:number)=>{
     })
 }
 export const createCustomer = async (data:Customer)=>{
-    const user = new Customer()
-    user.name = data.name
-    await user.save()
-    return user
+    const customer = await Customer.create(data)
+    await customer.save()
+    return customer
 }
 export const updateCustomer = async (id:number,data:Customer)=>{
-    let user = await findCustomer(id)
-    if (user){
+    let customer = await findCustomer(id)
+    if (customer){
         await Customer.update({ id }, data)
         return await findCustomer(id)
     }else throw new Error("usuario no encontrado" )
 }
 export const deleteCustomer = async (id:number)=>{
-    let user = await findCustomer(id)
-    if (user){
+    let customer = await findCustomer(id)
+    if (customer){
         await Customer.delete({ id })
-        return user
+        return customer
     }else throw new Error("usuario no encontrado")
 }
