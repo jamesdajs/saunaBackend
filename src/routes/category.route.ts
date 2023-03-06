@@ -6,7 +6,7 @@ const route = Router()
 route.get("/",roleVerify(["admin"]) ,async (req,res)=>{
     try {
         const categories = await categoryService.getCategories()
-        res.status(200).json({categories})
+        res.status(200).json(categories)
         
     } catch (error) {
         if (error instanceof Error) 

@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { BaseEntity, Column, CreateDateColumn, Double, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 import { Category } from "./Category"
 import { DetailProduct } from "./DetailProduct"
 
@@ -8,9 +8,14 @@ export class Product extends BaseEntity {
     id : number
     @Column()
     name : string
-    @Column()
+    @Column({type: "decimal", precision: 10, scale: 2, default: 0})
     price : number
-
+    @Column()
+    description : string
+    @Column()
+    urlImage : string
+    @Column('boolean', {default: true})
+    state : boolean
     @CreateDateColumn()
     createAt : Date
     @UpdateDateColumn()
