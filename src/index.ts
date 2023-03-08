@@ -6,6 +6,8 @@ import customerRoute from './routes/customer.route'
 import categoryRoute from './routes/category.route'
 import productRoute from './routes/product.route'
 import uploadRoute from './routes/upload.route'
+import lockerRoute from './routes/locker.route' 
+
 import cors  from 'cors';
 import {AppDataSource} from "./database/db"
 import dotenv from "dotenv"
@@ -30,6 +32,7 @@ app.use("/api/customers",customerRoute)
 app.use("/api/products",productRoute)
 app.use("/api/categories",categoryRoute)
 app.use("/api/upload",uploadRoute)
+app.use("/api/lockers",lockerRoute)
 
 // Ruta para subir imágenes
 

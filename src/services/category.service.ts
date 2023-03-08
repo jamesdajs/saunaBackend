@@ -3,10 +3,10 @@ export const getCategories = async ()=>{
     return await Category.find()
 }
 export const findCategory = async (id:number)=>{
-    return await Category.findOne({
-        
-        where:{id}
-    })
+    return await Category.createQueryBuilder("category")
+    .where("category.id = :id", { id })
+    .getOne()
+   
 }
 export const createCategory = async (data:Category)=>{
     const categoty = await Category.create(data)
@@ -18,12 +18,12 @@ export const updateCategory = async (id:number,data:Category)=>{
     if (categoty){
         await Category.update({ id }, data)
         return await findCategory(id)
-    }else throw new Error("usuario no encontrado")
+    }else throw new Error("categoria no encontrado")
 }
 export const deleteCategory = async (id:number)=>{
     let categoty = await findCategory(id)
     if (categoty){
         await Category.delete({ id })
         return categoty
-    }else throw new Error("usuario no encontrado")
+    }else throw new Error("categoria no encontrado")
 }

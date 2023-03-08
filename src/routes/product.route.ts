@@ -14,10 +14,33 @@ route.get("/",roleVerify(["admin"]) ,async (req,res)=>{
     }
 })
 .post("/",roleVerify(["admin"]) ,async (req,res)=>{
+    
     try {
-        req.body.category = await categoryService.findCategory(req.body.categotyId)
+        req.body.category = await categoryService.findCategory(parseInt(req.body.categoryId))
+        console.log(req.body)
         const product = await productService.createProduct(req.body)
         res.status(200).json(product)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
+.put("/:id",roleVerify(["admin"]) ,async (req,res)=>{
+    try {
+        if (req.body.categoryId)
+             req.body.category = await categoryService.findCategory(parseInt(req.body.categoryId))
+        console.log(req.body)
+        const product = await productService.updateProduct(+req.params.id,req.body)
+        res.status(200).json(product)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
+.delete("/:id",roleVerify(["admin"]) ,async (req,res)=>{
+    try {
+        const product = await productService.deleteProduct(+req.params.id)
+        res.status(201).json(product)
     } catch (error) {
         if (error instanceof Error) 
             res.status(500).json({message:error.message})
