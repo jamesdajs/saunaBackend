@@ -18,12 +18,12 @@ export const updateEntry = async (id:number,data:Entry)=>{
     if (user){
         await Entry.update({ id }, data)
         return await findEntry(id)
-    }else throw new Error("usuario no encontrado")
+    }else throw new Error("entrada no encontrado")
 }
 export const deleteEntry = async (id:number)=>{
     let user = await findEntry(id)
     if (user){
         await Entry.delete({ id })
         return user
-    }else throw new Error("usuario no encontrado")
+    }else throw new Error("entrada no encontrado")
 }

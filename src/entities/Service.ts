@@ -9,10 +9,13 @@ export class Service extends BaseEntity {
     @Column()
     name : string
     @Column()
-    type : string
+    type : number
     @Column()
     price : number
-    
+    @Column()
+    description : string
+    @Column('boolean', {default: true})
+    state : boolean
     @CreateDateColumn()
     createAt : Date
     @UpdateDateColumn()
