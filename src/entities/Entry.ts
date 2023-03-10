@@ -1,14 +1,21 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from "typeorm"
 import { Customer } from "./Customer"
+import { DetailProduct } from "./DetailProduct"
 import { DetailService } from "./DetailService"
+import { Product } from "./Product"
 import { User } from "./User"
 
 @Entity()
 export class Entry extends BaseEntity {
     @PrimaryGeneratedColumn()
     id : number
-    @Column()
+    @Column({
+        type: 'timestamp',
+        nullable: true,
+    })
     dateOut : Date
+    @Column('boolean', {default: true})
+    state : boolean
     @CreateDateColumn()
     createAt : Date
     @UpdateDateColumn()
@@ -19,4 +26,6 @@ export class Entry extends BaseEntity {
     customer :Customer
     @OneToMany(() => DetailService, (detail) => detail.entry)
     details: [DetailService]
+    @OneToMany(() => DetailProduct, (product) => product.entry)
+    detailsProduct: [DetailProduct]
 }

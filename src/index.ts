@@ -7,7 +7,8 @@ import categoryRoute from './routes/category.route'
 import productRoute from './routes/product.route'
 import uploadRoute from './routes/upload.route'
 import lockerRoute from './routes/locker.route' 
-import serviceRoute from './routes/service.route' 
+import serviceRoute from './routes/service.route'
+import entryRoute from './routes/entry.route' 
 
 import cors  from 'cors';
 import {AppDataSource} from "./database/db"
@@ -35,6 +36,7 @@ app.use("/api/categories",categoryRoute)
 app.use("/api/upload",uploadRoute)
 app.use("/api/lockers",lockerRoute)
 app.use("/api/services",serviceRoute)
+app.use("/api/entries",entryRoute)
 
 // Ruta para subir imágenes
 

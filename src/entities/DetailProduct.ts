@@ -9,7 +9,10 @@ export class DetailProduct extends BaseEntity {
     id : number
     @Column()
     cant : number
-
+    @Column()
+    price : number
+    @Column()
+    state : number
     @CreateDateColumn()
     createAt : Date
     @UpdateDateColumn()

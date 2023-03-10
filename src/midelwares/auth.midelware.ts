@@ -20,10 +20,11 @@ export const roleVerify = (role:string[]) =>(req:Request,res:Response,next:NextF
             return res.status(401).json({message:"Acces Danied"})
         }
         const payload = jwt.verify(token,process.env.SECRET_KEY || "ejemplo") as Ipayload
-        //console.log(payload);
+        console.log(payload);
         if (!role.includes(payload.role)) {
             return res.status(403).json({message:"Acces Danied"})
         }
+        req.body.authId = payload.id
         next()
     } catch (error) {
             if(error instanceof Error)

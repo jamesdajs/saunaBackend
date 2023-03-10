@@ -9,7 +9,8 @@ export class DetailService extends BaseEntity {
     id : number
     @Column()
     cant : number
-
+    @Column()
+    price : number
     @CreateDateColumn()
     createAt : Date
     @UpdateDateColumn()
