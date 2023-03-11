@@ -1,6 +1,8 @@
 import {Locker} from "../entities/Locker"
-export const getLockers = async ()=>{
-    return await Locker.find()
+export const getLockers = async (query={})=>{
+    return await Locker.find({
+        where:query
+    })
 }
 export const findLocker = async (id:number)=>{
     return await Locker.findOne({

@@ -1,6 +1,8 @@
 import {Service} from "../entities/Service"
-export const getServices = async ()=>{
-    return await Service.find()
+export const getServices = async (query={})=>{
+    return await Service.find({
+        where:query
+    })
 }
 export const findService = async (id:number)=>{
     return await Service.findOne({

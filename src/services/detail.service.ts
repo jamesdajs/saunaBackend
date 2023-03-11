@@ -1,5 +1,5 @@
 import {DetailService} from "../entities/DetailService"
-export const getCategories = async ()=>{
+export const getDetailsService = async ()=>{
     return await DetailService.find({
         relations:{
             entry:true,

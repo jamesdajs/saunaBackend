@@ -12,6 +12,15 @@ route.get("/",roleVerify(["user","admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
+route.get("/list/:state",roleVerify(["user","admin"]) ,async (req,res)=>{
+    try {
+        const lockers = await lockerService.getLockers({state:req.params.state == "true"})
+        res.status(200).json(lockers)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
 .post("/",roleVerify(["user","admin"]) ,async (req,res)=>{
     try {
         console.log(req.body)

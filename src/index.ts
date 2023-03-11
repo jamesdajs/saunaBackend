@@ -9,6 +9,7 @@ import uploadRoute from './routes/upload.route'
 import lockerRoute from './routes/locker.route' 
 import serviceRoute from './routes/service.route'
 import entryRoute from './routes/entry.route' 
+import detailRoute from './routes/detail.route' 
 
 import cors  from 'cors';
 import {AppDataSource} from "./database/db"
@@ -37,6 +38,7 @@ app.use("/api/upload",uploadRoute)
 app.use("/api/lockers",lockerRoute)
 app.use("/api/services",serviceRoute)
 app.use("/api/entries",entryRoute)
+app.use('/api/details',detailRoute)
 
 // Ruta para subir imágenes
 

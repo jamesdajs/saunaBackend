@@ -13,6 +13,15 @@ route.get("/",roleVerify(["admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
+route.get("/:state",roleVerify(["admin"]) ,async (req,res)=>{
+    try {
+        const products = await productService.getProducts({state:req.params.state=="true"})
+        res.status(200).json(products)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
 .post("/",roleVerify(["admin"]) ,async (req,res)=>{
     
     try {

@@ -2,7 +2,7 @@ import {Router}  from "express";
 import * as entryService from "../services/entry.service"
 import * as userService from "../services/user.service"
 import * as customerService from "../services/customer.service"
-import {roleVerify} from "../midelwares/auth.midelware"
+import {roleVerify,getSesionId} from "../midelwares/auth.midelware"
 const route = Router()
 
 route.get("/:state",roleVerify(["user","admin"]) ,async (req,res)=>{
@@ -26,7 +26,7 @@ route.get("/getEntry/:id",roleVerify(["user","admin"]) ,async (req,res)=>{
 .post("/",roleVerify(["user","admin"]) ,async (req,res)=>{
     try {
         //console.log(req)
-        req.body.user = await userService.findUser(parseInt(req.body.authId))
+        req.body.user = await userService.findUser(getSesionId(req))
         req.body.customer = await customerService.findCustomer(parseInt(req.body.customerId))
         const entry = await entryService.createEntry(req.body)
         res.status(201).json(entry)

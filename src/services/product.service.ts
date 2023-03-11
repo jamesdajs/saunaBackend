@@ -1,14 +1,22 @@
 import {Product} from "../entities/Product"
-export const getProducts = async ()=>{
+export const getProducts = async (query={})=>{
     return await Product.find({
         relations:{
             category:true
-        }
+        },
+        where:query
+    })
+}
+export const getProductsByState = async ()=>{
+    return await Product.find({
+        relations:{
+            category:true
+        },
+        where:{}
     })
 }
 export const findProduct = async (id:number)=>{
     return await Product.findOne({
-        
         where:{id}
     })
 }
