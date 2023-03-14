@@ -16,7 +16,7 @@ route.get("/:state",roleVerify(["user","admin"]) ,async (req,res)=>{
 })
 route.get("/getEntry/:id",roleVerify(["user","admin"]) ,async (req,res)=>{
     try {
-        const entrys = await entryService.findEntry(parseInt(req.params.id))
+        const entrys = await entryService.findEntry(parseInt(req.params.id),true)
         res.status(200).json(entrys)
     } catch (error) {
         if (error instanceof Error) 

@@ -8,18 +8,24 @@ export const getEntries = async (state:boolean)=>{
         where:{state}
     })
 }
-export const findEntry = async (id:number)=>{
-    return await Entry.findOne({
-        relations:{
+export const findEntry = async (id:number,rel=false)=>{
+    let relations = {}
+    if (rel){
+        relations={
             user:true,
             customer:true,
             details:{
-                lockers:true
+                lockers:true,
+                service:true
             },
             detailsProduct:{
                 product:true
             }
-        },
+        }
+    }
+
+    return await Entry.findOne({
+        relations,
         where:{id}
     })
 }
@@ -29,14 +35,14 @@ export const createEntry = async (data:Entry)=>{
     return entry
 }
 export const updateEntry = async (id:number,data:Entry)=>{
-    let entry = await findEntry(id)
+    let entry = await findEntry(id,false)
     if (entry){
         await Entry.update({ id }, data)
-        return await findEntry(id)
+        return await findEntry(id,false)
     }else throw new Error("entrada no encontrado")
 }
 export const deleteEntry = async (id:number)=>{
-    let entry = await findEntry(id)
+    let entry = await findEntry(id,false)
     if (entry){
         await Entry.delete({ id })
         return entry

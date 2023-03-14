@@ -28,12 +28,19 @@ route.get("/:id",roleVerify(["admin","user"]) ,async (req,res)=>{
 })
 .post("/",roleVerify(["admin","user"]) ,async (req,res)=>{
     try {
-        const service = await serviceService.findService(parseInt(req.body.serviceId))
-        const loker = await lockerService.findLocker(parseInt(req.body.lokerId))
-        const entry = await entryService.findEntry(parseInt(req.body.entryId))
+        console.log(req.body)
+        let lockers:any = []
+        const service = await serviceService.findService(req.body.serviceId)
+        let lockerId:any[] = req.body.lockerId!=''?req.body.lockerId:[]
+
+        lockerId.forEach(async (id:number) => {
+            lockers.push( await lockerService.findLocker(id))
+        })
+        const entry = await entryService.findEntry(parseInt(req.body.entryId),false)
         req.body.service = service
-        req.body.loker = loker
+        req.body.lockers = lockers
         req.body.entry = entry
+        console.log(req.body)
         const detail = await detailService.createDetailService(req.body)
         res.status(201).json(detail)
     } catch (error) {
