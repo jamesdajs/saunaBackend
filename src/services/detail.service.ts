@@ -10,9 +10,10 @@ export const getDetailsService = async ()=>{
     })
 }
 export const findDetailService = async (id:number)=>{
-    return await DetailService.createQueryBuilder("category")
-    .where("category.id = :id", { id })
-    .getOne()
+    return await DetailService.findOne({
+        
+        where:{id}
+    })
    
 }
 export const createDetailService = async (data:DetailService)=>{

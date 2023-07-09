@@ -9,9 +9,9 @@ export class DetailProduct extends BaseEntity {
     id : number
     @Column()
     cant : number
-    @Column()
+    @Column({type: "decimal", precision: 10, scale: 2, default: 0})
     price : number
-    @Column()
+    @Column({default: 0})
     state : number
     @CreateDateColumn()
     createAt : Date

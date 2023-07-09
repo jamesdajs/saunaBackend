@@ -1,11 +1,14 @@
 import {Category} from "../entities/Category"
-export const getCategories = async ()=>{
-    return await Category.find()
+export const getCategories = async (query={})=>{
+    return await Category.find({
+        where:query
+    })
 }
-export const findCategory = async (id:number)=>{
-    return await Category.createQueryBuilder("category")
-    .where("category.id = :id", { id })
-    .getOne()
+export const findCategory = async (id:number,relations={})=>{
+    return await Category.findOne({
+        where:{id},
+        relations
+    })
    
 }
 export const createCategory = async (data:Category)=>{

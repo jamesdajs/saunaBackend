@@ -22,6 +22,18 @@ route.get("/:state",roleVerify(["admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
+route.get("/category/:categoryId",roleVerify(["admin"]) ,async (req,res)=>{
+    try {
+        console.log(req.params.categoryId)
+        const category = await categoryService.findCategory(parseInt(req.params.categoryId),{products:true})
+        //const products = await productService.getProducts({category:category})
+        console.log(req.params.categoryId,category);
+        res.status(200).json(category?.products)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
 .post("/",roleVerify(["admin"]) ,async (req,res)=>{
     
     try {

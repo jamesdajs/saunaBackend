@@ -13,6 +13,16 @@ route.get("/",roleVerify(["admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
+route.get("/list/:state",roleVerify(["admin"]) ,async (req,res)=>{
+    try {
+        const categories = await categoryService.getCategories({state:req.params.state})
+        res.status(200).json(categories)
+        
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
 route.get("/:id",roleVerify(["admin"]) ,async (req,res)=>{
     try {
         const categories = await categoryService.findCategory(parseInt(req.params.id))
