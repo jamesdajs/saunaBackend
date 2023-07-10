@@ -6,6 +6,8 @@ export class Role extends BaseEntity {
     id : number
     @Column()
     name : string
+    @Column()
+    showname : string
     @CreateDateColumn()
     createAt : Date
     @UpdateDateColumn()

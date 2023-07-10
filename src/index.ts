@@ -11,6 +11,7 @@ import serviceRoute from './routes/service.route'
 import entryRoute from './routes/entry.route' 
 import detailRoute from './routes/detail.route' 
 import detailProductRoute from './routes/detailProduct.route' 
+import reportRoute from './routes/report.route' 
 
 import cors  from 'cors';
 import {AppDataSource} from "./database/db"
@@ -41,6 +42,7 @@ app.use("/api/services",serviceRoute)
 app.use("/api/entries",entryRoute)
 app.use('/api/details',detailRoute)
 app.use('/api/detailproduct',detailProductRoute)
+app.use('/api/reports',reportRoute)
 
 // Ruta para subir imágenes
 

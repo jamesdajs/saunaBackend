@@ -14,6 +14,12 @@ export class Entry extends BaseEntity {
         nullable: true,
     })
     dateOut : Date
+    @CreateDateColumn({
+        type: 'date',
+    })
+    dateIn : Date
+    @Column({type: "decimal", precision: 10, scale: 2, default: 0})
+    total : number
     @Column('boolean', {default: true})
     state : boolean
     @CreateDateColumn()

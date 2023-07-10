@@ -34,7 +34,11 @@ route.get("/:id",roleVerify(["admin","user"]) ,async (req,res)=>{
         let lockerId:any[] = req.body.lockerId!=''?req.body.lockerId:[]
 
         lockerId.forEach(async (id:number) => {
-            lockers.push( await lockerService.findLocker(id))
+            const loker = await lockerService.updateLocker(id,
+                {
+                    state:false
+                })
+            lockers.push(loker)
         })
         const entry = await entryService.findEntry(parseInt(req.body.entryId),false)
         req.body.service = service

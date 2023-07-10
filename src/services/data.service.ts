@@ -14,6 +14,16 @@ export const findData = async (id:number)=>{
         where:{id}
     })
 }
+export const find = async (where={})=>{
+    return await Data.findOne({
+        relations: {
+            user: {
+                role:true
+            },
+        },
+        where
+    })
+}
 export const createData = async (body:Data)=>{
 
     const data = new Data()

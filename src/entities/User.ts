@@ -8,6 +8,18 @@ export class User extends BaseEntity {
     id : number
     @Column()
     name : string
+    @Column()
+    ci : string
+    @Column()
+    phone : string
+    @Column()
+    gender : number
+    @Column({type: 'date'})
+    birthdate : Date
+    @Column({default:""})
+    observation : string
+    @Column('boolean', {default: true})
+    state : boolean
     @CreateDateColumn()
     createAt : Date
     @UpdateDateColumn()

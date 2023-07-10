@@ -15,7 +15,7 @@ export const createLocker = async (data:Locker)=>{
     await locker.save()
     return locker
 }
-export const updateLocker = async (id:number,data:Locker)=>{
+export const updateLocker = async (id:number,data={})=>{
     let locker = await findLocker(id)
     if (locker){
         await Locker.update({ id }, data)

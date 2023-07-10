@@ -2,13 +2,46 @@ import {Router}  from "express";
 import * as entryService from "../services/entry.service"
 import * as userService from "../services/user.service"
 import * as customerService from "../services/customer.service"
+import * as lokerService from "../services/locker.service"
 import {roleVerify,getSesionId} from "../midelwares/auth.midelware"
 const route = Router()
 
 route.get("/:state",roleVerify(["user","admin"]) ,async (req,res)=>{
     try {
-        const entrys = await entryService.getEntries(req.params.state==='true')
+        const entrys = await entryService.getEntries({state:req.params.state==='true'})
         res.status(200).json(entrys)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
+route.get("/outentry/:id",roleVerify(["user","admin"]) ,async (req,res)=>{
+    try {
+        const entrys = await entryService.findEntry(parseInt(req.params.id),true)
+        //lipiar casilleros
+        entrys!.details.map(t => {
+            t.lockers.map(async l => {
+                await lokerService.updateLocker(l.id,{
+                    state:true
+                })
+            })
+        })
+        //calcular total
+        const cant1 = entrys!.details.map(t => t.price*t.cant).reduce((acc, value) => acc + value, 0);
+
+        const cant2 = entrys!.detailsProduct.map(t => {
+              if(t.state == 2)
+                return t.price*t.cant
+              return 0
+            }).reduce((acc, value) => acc + value, 0);
+        
+        const entryres = await entryService.updateEntry(parseInt(req.params.id),{
+            total:cant1+cant2,
+            dateOut:new Date(),
+            state:false
+        })
+
+        res.status(200).json(entryres)
     } catch (error) {
         if (error instanceof Error) 
             res.status(500).json({message:error.message})
@@ -53,4 +86,5 @@ route.get("/getEntry/:id",roleVerify(["user","admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
+
 export default route

@@ -3,7 +3,7 @@ export const getUsers = async ()=>{
     return await User.find({
         relations: {
             data: true,
-            role:true
+            role: true
         }
     })
 }
@@ -17,8 +17,7 @@ export const findUser = async (id:number)=>{
     })
 }
 export const createUser = async (data:User)=>{
-    const user = new User()
-    user.name = data.name
+    const user = await User.create(data)
     await user.save()
     return user
 }
