@@ -5,6 +5,7 @@ const route = Router()
 
 route.post("/singup", async (req,res)=>{
     const user = await userService.createUser(req.body.user)
+
     try {
         
         req.body.data.user = user
@@ -17,6 +18,8 @@ route.post("/singup", async (req,res)=>{
         }
     }
 }).post("/singin", async (req,res)=>{
+    console.log(req.body)
+
     try {
         const data = await dataService.loggin(req.body)
         res.status(200).json({message:"login correcto",data})

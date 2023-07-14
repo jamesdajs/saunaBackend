@@ -56,6 +56,8 @@ export const loggin = async (body:Data)=>{
         },
         where:{username:body.username}
     })
+    console.log(data);
+    
     if (data){
         if(await validatePassword(body.password,data.password)){
             console.log(data);

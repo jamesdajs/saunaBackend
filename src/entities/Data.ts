@@ -6,7 +6,7 @@ export class Data extends BaseEntity {
     id : number
     @Column({unique:true})
     username : string
-    @Column({select: false})
+    @Column()
     password : string
     @CreateDateColumn()
     createAt : Date
