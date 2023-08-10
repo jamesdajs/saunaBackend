@@ -3,7 +3,7 @@ import * as serviceService from "../services/service.service"
 import {roleVerify} from "../midelwares/auth.midelware"
 const route = Router()
 
-route.get("/",roleVerify(["admin"]) ,async (req,res)=>{
+route.get("/",roleVerify(["admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const services = await serviceService.getServices()
         res.status(200).json(services)
@@ -13,7 +13,7 @@ route.get("/",roleVerify(["admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
-.get("/list/:state",roleVerify(["admin"]) ,async (req,res)=>{
+.get("/list/:state",roleVerify(["admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const services = await serviceService.getServices({state:req.params.state=='true'})
         res.status(200).json(services)
@@ -23,7 +23,7 @@ route.get("/",roleVerify(["admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
-route.get("/:id",roleVerify(["admin"]) ,async (req,res)=>{
+route.get("/:id",roleVerify(["admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const services = await serviceService.findService(parseInt(req.params.id))
         res.status(200).json(services)

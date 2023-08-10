@@ -12,16 +12,23 @@ import entryRoute from './routes/entry.route'
 import detailRoute from './routes/detail.route' 
 import detailProductRoute from './routes/detailProduct.route' 
 import reportRoute from './routes/report.route' 
+import cron from 'node-cron'
 
 import cors  from 'cors';
 import {AppDataSource} from "./database/db"
 import dotenv from "dotenv"
 import "reflect-metadata"
+
+import * as utilService from './services/util.service' 
 dotenv.config()
 const app = express()
 
 const allowedOrigins = ['http://localhost:4200'];
 
+cron.schedule('* * 0 * * *', async () => {
+    let backup = await utilService.createBackup("default");
+    console.log('cada minuto',backup);
+});
 const options: cors.CorsOptions = {
   origin: allowedOrigins
 };

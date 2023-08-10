@@ -6,13 +6,13 @@ import { Entry } from "./Entry"
 export class Service extends BaseEntity {
     @PrimaryGeneratedColumn()
     id : number
-    @Column()
+    @Column({length: 50,default:""})
     name : string
     @Column()
     type : number
     @Column()
     price : number
-    @Column()
+    @Column({length: 400,default:""})
     description : string
     @Column('boolean', {default: true})
     state : boolean

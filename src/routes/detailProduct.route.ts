@@ -6,7 +6,7 @@ import * as entryService from "../services/entry.service"
 import { DetailProduct } from "../entities/DetailProduct";
 const route = Router()
 
-route.get("/",roleVerify(["admin","user"]) ,async (req,res)=>{
+route.get("/",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const detail = await detailProductService.getDetailsService()
         res.status(200).json(detail)
@@ -16,7 +16,7 @@ route.get("/",roleVerify(["admin","user"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
-.get("/:id",roleVerify(["admin","user"]) ,async (req,res)=>{
+.get("/:id",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const detail = await detailProductService.findDetailProduct(parseInt(req.params.id))
         res.status(200).json(detail)
@@ -37,7 +37,7 @@ route.get("/",roleVerify(["admin","user"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })*/
-.post("/",roleVerify(["admin","user"]) ,async (req,res)=>{
+.post("/",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
     try {
         //console.log(req.body)
   
@@ -63,7 +63,7 @@ route.get("/",roleVerify(["admin","user"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
-.delete("/:id",roleVerify(["admin","user"]) ,async (req,res)=>{
+.delete("/:id",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const detail = await detailProductService.deleteDetailProduct(+req.params.id)
         res.status(201).json(detail)

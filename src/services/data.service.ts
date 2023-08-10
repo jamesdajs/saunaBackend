@@ -36,7 +36,8 @@ export const createData = async (body:Data)=>{
 export const updateData = async (id:number,body:Data)=>{
     let data = await findData(id)
     if (data){
-        await Data.update({ id }, body)
+       let  newdata={password:await encryptPassword(body.password)}
+        await Data.update({ id }, newdata)
         return await findData(id)
     }else return null
 }

@@ -5,11 +5,11 @@ import { DetailService } from "./DetailService"
 export class Locker extends BaseEntity {
     @PrimaryGeneratedColumn()
     id : number
-    @Column()
+    @Column({length: 15,default:""})
     code : string
-    @Column()
+    @Column({length: 50,default:""})
     type : string
-    @Column()
+    @Column({length: 400,default:""})
     observation : string
     @Column('boolean', {default: true})
     state : boolean

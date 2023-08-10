@@ -4,7 +4,7 @@ import * as productService from "../services/product.service"
 import {roleVerify} from "../midelwares/auth.midelware"
 const route = Router()
 
-route.get("/",roleVerify(["admin"]) ,async (req,res)=>{
+route.get("/",roleVerify(["admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const products = await productService.getProducts()
         res.status(200).json(products)
@@ -13,7 +13,7 @@ route.get("/",roleVerify(["admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
-route.get("/:state",roleVerify(["admin"]) ,async (req,res)=>{
+route.get("/:state",roleVerify(["admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const products = await productService.getProducts({state:req.params.state=="true"})
         res.status(200).json(products)
@@ -22,7 +22,7 @@ route.get("/:state",roleVerify(["admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
-route.get("/category/:categoryId",roleVerify(["admin"]) ,async (req,res)=>{
+route.get("/category/:categoryId",roleVerify(["admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
         console.log(req.params.categoryId)
         const category = await categoryService.findCategory(parseInt(req.params.categoryId),{products:true})

@@ -5,15 +5,15 @@ import { Entry } from "./Entry"
 export class Customer extends BaseEntity {
     @PrimaryGeneratedColumn()
     id : number
-    @Column()
+    @Column({ default:"",length: 50 })
     name : string
-    @Column()
+    @Column({ default:"",length: 15 })
     ci : string
-    @Column()
+    @Column({ default:"",length: 15 })
     phone : string
     @Column()
     gender : number
-    @Column()
+    @Column({ default:"",length: 400 })
     observation : string
     @Column('boolean', {default: true})
     state : boolean

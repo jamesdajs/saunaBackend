@@ -4,9 +4,9 @@ import { User } from "./User"
 export class Role extends BaseEntity {
     @PrimaryGeneratedColumn()
     id : number
-    @Column()
+    @Column({length: 50,default:""})
     name : string
-    @Column()
+    @Column({length: 50,default:""})
     showname : string
     @CreateDateColumn()
     createAt : Date

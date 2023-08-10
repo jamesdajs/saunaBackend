@@ -6,13 +6,13 @@ import { DetailProduct } from "./DetailProduct"
 export class Product extends BaseEntity {
     @PrimaryGeneratedColumn()
     id : number
-    @Column()
+    @Column({length: 50,default:""})
     name : string
     @Column({type: "decimal", precision: 10, scale: 2, default: 0})
     price : number
-    @Column()
+    @Column({length:400,default:""})
     description : string
-    @Column()
+    @Column({length: 400,default:""})
     urlImage : string
     @Column('boolean', {default: true})
     state : boolean

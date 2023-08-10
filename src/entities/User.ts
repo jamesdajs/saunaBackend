@@ -6,17 +6,17 @@ import { Role } from "./Role"
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id : number
-    @Column()
+    @Column({ length: 50 })
     name : string
-    @Column()
+    @Column({ length: 15 })
     ci : string
-    @Column()
+    @Column({ length: 15 })
     phone : string
     @Column()
     gender : number
     @Column({type: 'date'})
     birthdate : Date
-    @Column({default:""})
+    @Column({default:"",length:400})
     observation : string
     @Column('boolean', {default: true})
     state : boolean

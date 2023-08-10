@@ -5,7 +5,7 @@ import { Product } from "./Product"
 export class Category extends BaseEntity {
     @PrimaryGeneratedColumn()
     id : number
-    @Column()
+    @Column({default:"", length: 50 })
     name : string
     @Column({default:true})
     state:boolean

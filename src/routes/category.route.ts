@@ -3,7 +3,7 @@ import * as categoryService from "../services/category.service"
 import {roleVerify} from "../midelwares/auth.midelware"
 const route = Router()
 
-route.get("/",roleVerify(["admin"]) ,async (req,res)=>{
+route.get("/",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const categories = await categoryService.getCategories()
         res.status(200).json(categories)
@@ -13,7 +13,7 @@ route.get("/",roleVerify(["admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
-route.get("/list/:state",roleVerify(["admin"]) ,async (req,res)=>{
+route.get("/list/:state",roleVerify(["admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const categories = await categoryService.getCategories({state:req.params.state})
         res.status(200).json(categories)
@@ -23,7 +23,7 @@ route.get("/list/:state",roleVerify(["admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
-route.get("/:id",roleVerify(["admin"]) ,async (req,res)=>{
+route.get("/:id",roleVerify(["admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const categories = await categoryService.findCategory(parseInt(req.params.id))
         res.status(200).json(categories)
