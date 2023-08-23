@@ -22,7 +22,11 @@ route.post("/singup", async (req,res)=>{
 
     try {
         const data = await dataService.loggin(req.body)
-        res.status(200).json({message:"login correcto",data})
+        if(!data.user.state){
+            res.status(407).json({message:"El usuario esta deshabilitado!"})
+        }else{
+            res.status(200).json({message:"Login correcto",data})
+        }
     } catch (error) {
         if (error instanceof Error) 
             res.status(406).json({message:error.message})

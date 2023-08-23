@@ -1,5 +1,7 @@
 import {Router}  from "express";
 import * as entryService from "../services/entry.service"
+import * as detailProductService from "../services/detailProduct.servise"
+import * as detailService from "../services/detail.service"
 import {roleVerify,getSesionId} from "../midelwares/auth.midelware"
 import { Between } from "typeorm";
 const route = Router()
@@ -9,6 +11,58 @@ function sumarDias(dias:number){
     return fecha;
   }
 route.get("/",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+    console.log(req.query);
+    try {
+        const dateIni = req.query.dateIni?new Date(req.query.dateIni+""):sumarDias(-30)
+        const dateEnd = req.query.dateEnd?new Date(req.query.dateEnd+""):new Date()
+        const dias = await entryService.getEntriesReport(dateIni,dateEnd)
+        //console.log(dias);
+        res.status(200).json(dias)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
+route.get("/product",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+    console.log(req.query);
+    try {
+        const dateIni = req.query.dateIni?new Date(req.query.dateIni+""):sumarDias(-30)
+        const dateEnd = req.query.dateEnd?new Date(req.query.dateEnd+""):new Date()
+        const dias = await detailProductService.getProductoReport(dateIni,dateEnd)
+        //console.log(dias);
+        res.status(200).json(dias)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
+route.get("/service",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+    console.log(req.query);
+    try {
+        const dateIni = req.query.dateIni?new Date(req.query.dateIni+""):sumarDias(-30)
+        const dateEnd = req.query.dateEnd?new Date(req.query.dateEnd+""):new Date()
+        const dias = await detailService.getServiceReport(dateIni,dateEnd)
+        //console.log(dias);
+        res.status(200).json(dias)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
+route.get("/customer",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+    console.log(req.query);
+    try {
+        const dateIni = req.query.dateIni?new Date(req.query.dateIni+""):sumarDias(-30)
+        const dateEnd = req.query.dateEnd?new Date(req.query.dateEnd+""):new Date()
+        const dias = await entryService.getEntriesCustomerReport(dateIni,dateEnd)
+        //console.log(dias);
+        res.status(200).json(dias)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
+route.get("/service",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
     console.log(req.query);
     try {
         const dateIni = req.query.dateIni?new Date(req.query.dateIni+""):sumarDias(-30)

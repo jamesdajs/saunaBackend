@@ -1,4 +1,6 @@
 import {DetailService} from "../entities/DetailService"
+
+import { AppDataSource } from "../database/db"
 export const getDetailsService = async ()=>{
     return await DetailService.find({
         relations:{
@@ -15,6 +17,19 @@ export const findDetailService = async (id:number)=>{
         where:{id}
     })
    
+}
+export const getServiceReport = async (date1:Date,date2:Date)=>{
+    return await AppDataSource.createQueryBuilder()
+    .select("s.id","id")
+    .addSelect('sum(dp."cant")',"cant")
+    .addSelect('sum(dp."cant" * dp."price")',"total")
+    .addSelect('s."name"')
+    .from("detail_service","dp")
+    .from("service","s")
+    .where('s.id = dp."serviceId"')
+    .andWhere('dp."updateAt" BETWEEN :date1 AND :date2',{date1,date2})
+    .groupBy("s.id")
+    .getRawMany() 
 }
 export const createDetailService = async (data:DetailService)=>{
     const detailServiceService = await DetailService.create(data)

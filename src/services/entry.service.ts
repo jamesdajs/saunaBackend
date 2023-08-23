@@ -19,6 +19,20 @@ export const getEntriesReport = async (date1:Date,date2:Date)=>{
     //.addGroupBy("e.id")
     .getRawMany() 
 }
+
+export const getEntriesCustomerReport = async (date1:Date,date2:Date)=>{
+    return await AppDataSource.createQueryBuilder()
+    .select("cu.id")
+    .addSelect('cu.ci')
+    .addSelect('cu.name')
+    .addSelect('sum(e.total)',"total")
+    .from("customer","cu")
+    .from('entry','e')
+    .where('cu.id = e."customerId"')
+    .andWhere('e."dateIn" BETWEEN :date1 AND :date2',{date1,date2})
+    .groupBy("cu.id")
+    .getRawMany() 
+}
 export const getEntriesReportDay = async (date1:Date)=>{
     return await AppDataSource.createQueryBuilder()
     .select("e.*")

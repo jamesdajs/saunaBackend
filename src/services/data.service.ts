@@ -66,10 +66,10 @@ export const loggin = async (body:Data)=>{
             const token = jwt.sign({id:data.user.id,role:data.user.role.name},process.env.SECRET_KEY || "ejemplo",{expiresIn:60*60*24})
             return {user:data.user,token}
         }else{
-            throw new Error("password incorrecto")
+            throw new Error("Contraseña incorrecta")
         }
     }else{
-        throw new Error("usuario o password no valido")
+        throw new Error("usuario o contraseña no valido")
     }
 }
 const encryptPassword = async (password:string)=>{

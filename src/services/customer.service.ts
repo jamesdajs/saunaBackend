@@ -1,12 +1,29 @@
 import {Customer} from "../entities/Customer"
+import { AppDataSource } from "../database/db"
 export const getCustomers = async ()=>{
     return await Customer.find()
 }
 export const findCustomer = async (id:number)=>{
     return await Customer.findOne({
-        
         where:{id}
     })
+}
+export const findCustomerEntry = async (id:number)=>{
+    return await Customer.findOne({
+        where:{id},
+        relations:{
+            entries:true
+        },
+    })
+}
+
+export const findCustomerEntryDate =  async (id:number,date1:Date,date2:Date)=>{
+    return await AppDataSource.createQueryBuilder()
+    .select("e.*")
+    .from('entry','e')
+    .where('e."customerId" = :id',{id})
+    .andWhere('e."dateIn" BETWEEN :date1 AND :date2',{date1,date2})
+    .getRawMany() 
 }
 export const createCustomer = async (data:Customer)=>{
     const customer = await Customer.create(data)
