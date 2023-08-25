@@ -20,6 +20,21 @@ export const getEntriesReport = async (date1:Date,date2:Date)=>{
     .getRawMany() 
 }
 
+export const getCantCustomerReportDay = async (date:Date,state=true)=>{
+    return await AppDataSource.createQueryBuilder()
+    .select("sum(ds.cant)",'cant')
+    .addSelect('s.name','name')
+    .from('entry','e')
+    .from('detail_service','ds')
+    .from('service','s')
+    .where('e.id = ds."entryId"')
+    .andWhere('s.id = ds."serviceId"')
+    .andWhere('e."state" = :state',{state})
+    .andWhere(`e."dateIn" = to_date(:date :: text,'YYYY-MM-DD')`,{date})
+    //.andWhere(`e."dateIn" = '2023-08-24'`,{date})
+    .groupBy("s.id")
+    .getRawMany() 
+}
 export const getEntriesCustomerReport = async (date1:Date,date2:Date)=>{
     return await AppDataSource.createQueryBuilder()
     .select("cu.id")

@@ -8,8 +8,20 @@ const route = Router()
 
 route.get("/:state",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
+        console.log("get");
         const entrys = await entryService.getEntries({state:req.params.state==='true'})
         res.status(200).json(entrys)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
+route.get("/clientes/count",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+    try {
+        console.log("countperson");
+        
+        const cantPerson = await entryService.getCantCustomerReportDay(new Date)
+        res.status(200).json(cantPerson)
     } catch (error) {
         if (error instanceof Error) 
             res.status(500).json({message:error.message})
