@@ -20,8 +20,11 @@ const storage = multer.diskStorage({
 route.post('/',  upload.single('image'), (req, res) => {
     res.status(200).json({path:req.file?.filename})
   });
-
+  route.delete('/', (req, res) => {
+    res.status(200).send('No se elimino imagenes');
+  });
 route.delete('/:image', (req, res) => {
+  try {
     const image = req.params.image;
     const rutaImagen =path.resolve(__dirname ,'../../public/uploads/' , image);
     //console.log(path.normalize(rutaImagen))
@@ -34,6 +37,10 @@ route.delete('/:image', (req, res) => {
       console.log('Imagen eliminada del servidor');
       res.status(200).send('Imagen eliminada del servidor');
     });
+  } catch (error) {
+    res.status(500).send('Error al eliminar la imagen o no se encontro');
+  }
+  
   });
  
   

@@ -14,7 +14,7 @@ route.get("/",roleVerify(["user","admin","receptionist"]) ,async (req,res)=>{
 })
 route.get("/list/:state",roleVerify(["user","admin","receptionist"]) ,async (req,res)=>{
     try {
-        const lockers = await lockerService.getLockers({state:req.params.state == "true"})
+        const lockers = await lockerService.getLockers({taken:req.params.state == "false",state:true})
         res.status(200).json(lockers)
     } catch (error) {
         if (error instanceof Error) 

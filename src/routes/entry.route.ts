@@ -34,7 +34,7 @@ route.get("/outentry/:id",roleVerify(["user","admin","receptionist","delivery"])
         entrys!.details.map(t => {
             t.lockers.map(async l => {
                 await lokerService.updateLocker(l.id,{
-                    state:true
+                    taken:false
                 })
             })
         })

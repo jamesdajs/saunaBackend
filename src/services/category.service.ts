@@ -4,9 +4,9 @@ export const getCategories = async (query={})=>{
         where:query
     })
 }
-export const findCategory = async (id:number,relations={})=>{
+export const findCategory = async (id:number,relations={},state=true)=>{
     return await Category.findOne({
-        where:{id},
+        where:{id,state},
         relations
     })
    

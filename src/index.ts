@@ -25,7 +25,7 @@ const app = express()
 
 const allowedOrigins = ['http://localhost:4200'];
 
-cron.schedule('* * 0 * * *', async () => {
+cron.schedule('* * * * 0', async () => {
     let backup = await utilService.createBackup("default");
     console.log('cada minuto',backup);
 });

@@ -50,7 +50,8 @@ route.get("/category/:categoryId",roleVerify(["admin","receptionist","delivery"]
     try {
         if (req.body.categoryId)
              req.body.category = await categoryService.findCategory(parseInt(req.body.categoryId))
-        console.log(req.body)
+        delete req.body.categoryId
+             console.log(req.body)
         const product = await productService.updateProduct(+req.params.id,req.body)
         res.status(200).json(product)
     } catch (error) {

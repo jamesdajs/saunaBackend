@@ -12,6 +12,8 @@ export class Locker extends BaseEntity {
     @Column({length: 400,default:""})
     observation : string
     @Column('boolean', {default: true})
+    taken: boolean
+    @Column('boolean', {default: true})
     state : boolean
     @CreateDateColumn()
     createAt : Date
