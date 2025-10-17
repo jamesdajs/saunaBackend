@@ -1,5 +1,6 @@
 import { AppDataSource } from "../database/db"
 import {Entry} from "../entities/Entry"
+import * as utils from "./util.service"
 export const getEntries = async (where={})=>{
     return await Entry.find({
         relations:{
@@ -21,6 +22,7 @@ export const getEntriesReport = async (date1:Date,date2:Date)=>{
 }
 
 export const getCantCustomerReportDay = async (date:Date,state=true)=>{
+    const {startOfDay,endOfDay} = utils.getTodayEntriesInLocalTime(date)
     return await AppDataSource.createQueryBuilder()
     .select("sum(ds.cant)",'cant')
     .addSelect('s.name','name')
@@ -30,7 +32,7 @@ export const getCantCustomerReportDay = async (date:Date,state=true)=>{
     .where('e.id = ds."entryId"')
     .andWhere('s.id = ds."serviceId"')
     .andWhere('e."state" = :state',{state})
-    .andWhere(`e."dateIn" = to_date(:date :: text,'YYYY-MM-DD')`,{date})
+    .andWhere("e.dateIn BETWEEN :startOfDay AND :endOfDay",{startOfDay,endOfDay})
     //.andWhere(`e."dateIn" = '2023-08-24'`,{date})
     .groupBy("s.id")
     .getRawMany() 
@@ -61,6 +63,7 @@ export const getEntriesReportDay = async (date1:Date)=>{
     .getRawMany() 
 }
 export const getEntriesReportDayProduct = async (date1:Date)=>{
+    const {startOfDay,endOfDay} = utils.getTodayEntriesInLocalTime(date1)
     return await AppDataSource.createQueryBuilder()
     .select("pr.*")
     .addSelect("sum(dp.cant)","cant")
@@ -70,7 +73,7 @@ export const getEntriesReportDayProduct = async (date1:Date)=>{
     .from("product","pr")
     .from("detail_product","dp")
     .from("category","c")
-    .where(`to_date(e."dateIn" :: text,'YYYY-MM-DD') = to_date(:date1 :: text,'YYYY-MM-DD') `,{date1})
+    .where(`to_date(e."dateIn" :: text,'YYYY-MM-DD') = to_date(:startOfDay :: text,'YYYY-MM-DD') `,{startOfDay})
     .andWhere('e.id = dp."entryId"')
     .andWhere('pr.id = dp."productId"')
     .andWhere('c.id = pr."categoryId"')
@@ -81,6 +84,8 @@ export const getEntriesReportDayProduct = async (date1:Date)=>{
     .getRawMany()
 }
 export const getEntriesReportDayService = async (date1:Date)=>{
+
+    const {startOfDay,endOfDay} = utils.getTodayEntriesInLocalTime(date1)
     return await AppDataSource.createQueryBuilder() 
     .select("s.*")
     .addSelect("sum(ds.cant)","cant")
@@ -88,7 +93,7 @@ export const getEntriesReportDayService = async (date1:Date)=>{
     .from("entry","e")
     .from("service","s")
     .from("detail_service","ds")
-    .where(`to_date(e."dateIn" :: text,'YYYY-MM-DD') = to_date(:date1 :: text,'YYYY-MM-DD') `,{date1})
+    .where(`to_date(e."dateIn" :: text,'YYYY-MM-DD') = to_date(:startOfDay :: text,'YYYY-MM-DD') `,{startOfDay})
     .andWhere('e.id = ds."entryId"')
     .andWhere('s.id = ds."serviceId"')
     .groupBy("s.id")

@@ -1,7 +1,9 @@
 import {User} from "../entities/User"
 import { AppDataSource } from "../database/db"
+import { Not } from "typeorm"
 export const getUsers = async ()=>{
     return await User.find({
+        where:{id:Not(1)},
         relations: {
             data: true,
             role: true

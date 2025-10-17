@@ -14,8 +14,17 @@ route.get("/",roleVerify(["user","admin","receptionist"]) ,async (req,res)=>{
 })
 route.get("/list/:state",roleVerify(["user","admin","receptionist"]) ,async (req,res)=>{
     try {
-        const lockers = await lockerService.getLockers({taken:req.params.state == "false",state:true})
+        const lockers = await lockerService.getLockers({taken:req.params.state == "true",state:true})
         res.status(200).json(lockers)
+    } catch (error) {
+        if (error instanceof Error) 
+            res.status(500).json({message:error.message})
+    }
+})
+route.get("/leaveall/" ,async (req,res)=>{
+    try {
+        await lockerService.updateAllLockers()
+        res.status(200).json({message:"Lockers actualizados"})
     } catch (error) {
         if (error instanceof Error) 
             res.status(500).json({message:error.message})

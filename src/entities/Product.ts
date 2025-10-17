@@ -14,6 +14,8 @@ export class Product extends BaseEntity {
     description : string
     @Column({length: 400,default:""})
     urlImage : string
+    @Column({   default: 0})
+    belongs : number
     @Column('boolean', {default: true})
     state : boolean
     @CreateDateColumn()

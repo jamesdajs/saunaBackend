@@ -1,0 +1,58 @@
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: sauna-postgres-db
+    restart: unless-stopped 
+    environment:
+      POSTGRES_USER: jamesdajs # Nombre de usuario para la base de datos
+      POSTGRES_PASSWORD: polo1028 # Contraseña para el usuario
+      POSTGRES_DB: florida # Nombre de la base de datos inicial
+
+      TZ: America/La_Paz 
+      # Opcional: También puedes configurar la zona horaria de PostgreSQL
+      PGTZ: America/La_Paz 
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck: # 🚨 AÑADIDO: Para verificar que la DB está lista
+      test: ["CMD-SHELL", "pg_isready -U sauna_user -d sauna_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: 
+      context: ./ 
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      postgres:
+        # 🚨 CORRECCIÓN 2: Esperar a que la DB esté HEALTHY (Lista)
+        condition: service_healthy 
+    environment:
+      # 🚨 CORRECCIÓN 3: Variables de conexión deben usar el nombre del servicio
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: jamesdajs
+      DB_PASSWORD: polo1028
+      DB_NAME: florida
+      PORT: 3000
+    volumes:
+      # 🚨 Montar el volumen en la carpeta de subidas
+      - backend_uploads:/app/public/uploads
+    ports:
+      - "3000:3000" # Mapeo de puerto correcto (Host 3100 -> Contenedor 3000)
+  frontend:
+    build:
+      context: ../sauna-material-cli 
+      dockerfile: Dockerfile # Usa el nombre que le diste al archivo
+    restart: unless-stopped
+    ports:
+      - "4100:80"
+volumes:
+  postgres_data:
+    driver: local
+  backend_uploads: # 🚨 Definición del volumen persistente para imágenes
+    driver: local

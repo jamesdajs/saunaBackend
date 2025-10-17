@@ -4,8 +4,8 @@ import * as dataService from "../services/data.service"
 const route = Router()
 
 route.post("/singup", async (req,res)=>{
+    
     const user = await userService.createUser(req.body.user)
-
     try {
         
         req.body.data.user = user

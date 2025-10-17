@@ -1,7 +1,11 @@
 import {Locker} from "../entities/Locker"
 export const getLockers = async (query={})=>{
     return await Locker.find({
-        where:query
+        where:query,
+        order: {
+            // Se usa una cadena para inyectar la función SQL de conversión.
+            code: "CAST(codigo AS INTEGER)" as "ASC" // Ejemplo para PostgreSQL/SQLite
+        }
     })
 }
 export const findLocker = async (id:number)=>{
@@ -28,4 +32,10 @@ export const deleteLocker = async (id:number)=>{
         await Locker.delete({ id })
         return locker
     }else throw new Error("Casillero no encontrado")
+}
+export const updateAllLockers = async() => {
+    const updateResult = await Locker.update(
+        {}, 
+        { taken: false }
+    );console.log(`✅ Lockers actualizados: ${updateResult.affected}`);
 }

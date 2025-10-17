@@ -3,6 +3,7 @@ import * as entryService from "../services/entry.service"
 import * as userService from "../services/user.service"
 import * as customerService from "../services/customer.service"
 import * as lokerService from "../services/locker.service"
+import * as utils from "../services/util.service"
 import {roleVerify,getSesionId} from "../midelwares/auth.midelware"
 const route = Router()
 
@@ -49,7 +50,7 @@ route.get("/outentry/:id",roleVerify(["user","admin","receptionist","delivery"])
         
         const entryres = await entryService.updateEntry(parseInt(req.params.id),{
             total:cant1+cant2,
-            dateOut:new Date(),
+            dateOut:utils.getCurrentBoliviaTimeForDB(),
             state:false
         })
 
@@ -82,6 +83,7 @@ route.get("/getEntry/:id",roleVerify(["user","admin","receptionist","delivery"])
 })
 .put("/:id",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
+        console.log(req.body)
         const entry = await entryService.updateEntry(+req.params.id,req.body)
         res.status(201).json(entry)
     } catch (error) {

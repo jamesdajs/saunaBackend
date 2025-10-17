@@ -11,7 +11,7 @@ export class Locker extends BaseEntity {
     type : string
     @Column({length: 400,default:""})
     observation : string
-    @Column('boolean', {default: true})
+    @Column('boolean', {default: false})
     taken: boolean
     @Column('boolean', {default: true})
     state : boolean

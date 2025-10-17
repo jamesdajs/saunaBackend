@@ -15,11 +15,15 @@ export class Entry extends BaseEntity {
     })
     dateOut : Date
     @CreateDateColumn({
-        type: 'date',
+        type: 'timestamp with time zone',
     })
     dateIn : Date
     @Column({type: "decimal", precision: 10, scale: 2, default: 0})
     total : number
+    @Column({type: "decimal", precision: 10, scale: 2, default: 0})
+    paid : number
+    @Column({default:"",length:400})
+    observation : string
     @Column('boolean', {default: true})
     state : boolean
     @CreateDateColumn()
