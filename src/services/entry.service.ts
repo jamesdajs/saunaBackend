@@ -5,7 +5,12 @@ export const getEntries = async (where={})=>{
     return await Entry.find({
         relations:{
             user:true,
-            customer:true
+            customer:true,
+            details:{
+                lockers:true,
+                
+
+            },
         },
         where
     })
