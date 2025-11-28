@@ -3,6 +3,7 @@ services:
   postgres:
     image: postgres:latest
     container_name: sauna-postgres-db
+    # resrtart: unless-stopped
     restart: always 
     environment:
       POSTGRES_USER: jamesdajs # Nombre de usuario para la base de datos
@@ -15,6 +16,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
+    # - D:\sistema sauna\volumenes\postgres_data:/var/lib/postgresql/data # Ruta en Windows
       - postgres_data:/var/lib/postgresql/data
     healthcheck: # 🚨 AÑADIDO: Para verificar que la DB está lista
       test: ["CMD-SHELL", "pg_isready -U sauna_user -d sauna_db"]
@@ -26,6 +28,8 @@ services:
     build: 
       context: ./ 
       dockerfile: Dockerfile
+
+    # resrtart: unless-stopped
     restart: always
     depends_on:
       postgres:
@@ -39,8 +43,10 @@ services:
       DB_PASSWORD: polo1028
       DB_NAME: florida
       PORT: 3000
+      TZ: America/La_Paz
     volumes:
       # 🚨 Montar el volumen en la carpeta de subidas
+      #  Ruta en Windows: D:\sistema sauna\volumenes\backend_uploads:/app/public/uploads
       - backend_uploads:/app/public/uploads
     ports:
       - "3000:3000" # Mapeo de puerto correcto (Host 3100 -> Contenedor 3000)
@@ -48,9 +54,13 @@ services:
     build:
       context: ../sauna-material-cli 
       dockerfile: Dockerfile # Usa el nombre que le diste al archivo
-    restart: allways
+
+    # resrtart: unless-stopped
+    restart: always
     ports:
       - "4100:80"
+# en windows las rutas de los volumenes serian asi:
+# D:\sistema sauna\volumenes y borrar los volumenes declarados abajo
 volumes:
   postgres_data:
     driver: local

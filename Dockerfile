@@ -27,7 +27,8 @@ RUN npm run build
 FROM node:20-alpine AS production
 
 WORKDIR /app
-
+#RUN apk add --no-cache python3 make g++ # Dependencias necesarias para algunas librerías nativas de Node.js
+#
 # 1. Copia solo los archivos de producción
 COPY package.json package-lock.json ./
 
