@@ -29,7 +29,7 @@ import * as utilService from './services/util.service'
 import path from 'node:path'
 const app = express()
 
-const allowedOrigins = ['http://localhost:4200','http://localhost:4100','*'];
+const allowedOrigins = ['http://localhost:4200','http://localhost:4100','*','http://saunaflorida.local:4100'];
 
 cron.schedule('0 1 1 * *', async () => {
     let backup = await utilService.createBackup("default");
