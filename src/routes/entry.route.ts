@@ -7,7 +7,7 @@ import * as utils from "../services/util.service"
 import {roleVerify,getSesionId} from "../midelwares/auth.midelware"
 const route = Router()
 
-route.get("/:state",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/:state",roleVerify(["user","admin","delivery"]) ,async (req,res)=>{
     try {
         console.log("get");
         const entrys = await entryService.getEntries({state:req.params.state==='true'})
@@ -17,7 +17,7 @@ route.get("/:state",roleVerify(["user","admin","receptionist","delivery"]) ,asyn
             res.status(500).json({message:error.message})
     }
 })
-route.get("/clientes/count",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/clientes/count",roleVerify(["user","admin","delivery"]) ,async (req,res)=>{
     try {
         console.log("countperson");
         
@@ -28,7 +28,7 @@ route.get("/clientes/count",roleVerify(["user","admin","receptionist","delivery"
             res.status(500).json({message:error.message})
     }
 })
-route.get("/outentry/:id",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/outentry/:id",roleVerify(["user","admin"]) ,async (req,res)=>{
     try {
         const entrys = await entryService.findEntry(parseInt(req.params.id),true)
         //lipiar casilleros
@@ -60,7 +60,7 @@ route.get("/outentry/:id",roleVerify(["user","admin","receptionist","delivery"])
             res.status(500).json({message:error.message})
     }
 })
-route.get("/getEntry/:id",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/getEntry/:id",roleVerify(["user","admin","delivery"]) ,async (req,res)=>{
     try {
         const entrys = await entryService.findEntry(parseInt(req.params.id),true)
         res.status(200).json(entrys)
@@ -69,7 +69,7 @@ route.get("/getEntry/:id",roleVerify(["user","admin","receptionist","delivery"])
             res.status(500).json({message:error.message})
     }
 })
-.post("/",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+.post("/",roleVerify(["user","admin"]) ,async (req,res)=>{
     try {
         //console.log(req)
         req.body.user = await userService.findUser(getSesionId(req))
@@ -81,7 +81,7 @@ route.get("/getEntry/:id",roleVerify(["user","admin","receptionist","delivery"])
             res.status(500).json({message:error.message})
     }
 })
-.put("/:id",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+.put("/:id",roleVerify(["user","admin"]) ,async (req,res)=>{
     try {
         console.log(req.body)
         const entry = await entryService.updateEntry(+req.params.id,req.body)
@@ -91,7 +91,7 @@ route.get("/getEntry/:id",roleVerify(["user","admin","receptionist","delivery"])
             res.status(500).json({message:error.message})
     }
 })
-.delete("/:id",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+.delete("/:id",roleVerify(["user","admin"]) ,async (req,res)=>{
     try {
         const entry = await entryService.deleteEntry(+req.params.id)
         res.status(201).json(entry)

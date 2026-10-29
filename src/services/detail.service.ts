@@ -1,4 +1,5 @@
 import {DetailService} from "../entities/DetailService"
+import {Entry} from "../entities/Entry"
 
 import { AppDataSource } from "../database/db"
 export const getDetailsService = async ()=>{
@@ -13,8 +14,8 @@ export const getDetailsService = async ()=>{
 }
 export const findDetailService = async (id:number)=>{
     return await DetailService.findOne({
-        
-        where:{id}
+        where:{id},
+        relations:{entry:true}
     })
    
 }
@@ -39,6 +40,17 @@ export const createDetailService = async (data:DetailService)=>{
 export const updateDetailService = async (id:number,data:DetailService)=>{
     let detailServiceService = await findDetailService(id)
     if (detailServiceService){
+        if (data.paid !== undefined && data.paid !== detailServiceService.paid) {
+            const amount = detailServiceService.price * detailServiceService.cant
+            const difference = data.paid ? amount : -amount
+            const currentPaid = Number(detailServiceService.entry.paid || 0)
+
+            await Entry.update(
+                {id: detailServiceService.entry.id},
+                {paid: currentPaid + difference}
+            )
+        }
+
         await DetailService.update({ id }, data)
         return await findDetailService(id)
     }else throw new Error("categoria no encontrado")

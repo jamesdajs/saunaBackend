@@ -10,7 +10,7 @@ function sumarDias(dias:number){
     fecha.setDate(fecha.getDate() + dias);
     return fecha;
   }
-route.get("/",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/",roleVerify(["user","admin"]) ,async (req,res)=>{
     console.log(req.query);
     try {
         const dateIni = req.query.dateIni?new Date(req.query.dateIni+""):sumarDias(-30)
@@ -23,7 +23,7 @@ route.get("/",roleVerify(["user","admin","receptionist","delivery"]) ,async (req
             res.status(500).json({message:error.message})
     }
 })
-route.get("/product",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/product",roleVerify(["user","admin"]) ,async (req,res)=>{
     console.log(req.query);
     try {
         const dateIni = req.query.dateIni?new Date(req.query.dateIni+""):sumarDias(-30)
@@ -36,7 +36,7 @@ route.get("/product",roleVerify(["user","admin","receptionist","delivery"]) ,asy
             res.status(500).json({message:error.message})
     }
 })
-route.get("/service",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/service",roleVerify(["user","admin"]) ,async (req,res)=>{
     console.log(req.query);
     try {
         const dateIni = req.query.dateIni?new Date(req.query.dateIni+""):sumarDias(-30)
@@ -49,7 +49,7 @@ route.get("/service",roleVerify(["user","admin","receptionist","delivery"]) ,asy
             res.status(500).json({message:error.message})
     }
 })
-route.get("/customer",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/customer",roleVerify(["user","admin"]) ,async (req,res)=>{
     console.log(req.query);
     try {
         const dateIni = req.query.dateIni?new Date(req.query.dateIni+""):sumarDias(-30)
@@ -62,7 +62,7 @@ route.get("/customer",roleVerify(["user","admin","receptionist","delivery"]) ,as
             res.status(500).json({message:error.message})
     }
 })
-route.get("/service",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/service",roleVerify(["user","admin"]) ,async (req,res)=>{
     console.log(req.query);
     try {
         const dateIni = req.query.dateIni?new Date(req.query.dateIni+""):sumarDias(-30)
@@ -75,7 +75,7 @@ route.get("/service",roleVerify(["user","admin","receptionist","delivery"]) ,asy
             res.status(500).json({message:error.message})
     }
 })
-route.get("/:day",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/:day",roleVerify(["user","admin"]) ,async (req,res)=>{
     console.log(req.query);
     try {
         const dias = await entryService.getEntriesReportDay(new Date(req.params.day))
@@ -86,7 +86,7 @@ route.get("/:day",roleVerify(["user","admin","receptionist","delivery"]) ,async 
             res.status(500).json({message:error.message})
     }
 })
-route.get("/detail/:day",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/detail/:day",roleVerify(["user","admin"]) ,async (req,res)=>{
     console.log(req.params);
     try {
         let dateIn = req.params.day?new Date(req.params.day):new Date()

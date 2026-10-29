@@ -7,7 +7,7 @@ function sumarDias(dias:number){
     fecha.setDate(fecha.getDate() + dias);
     return fecha;
   }
-route.get("/",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/",roleVerify(["user","admin","delivery"]) ,async (req,res)=>{
     try {
         const customers = await customerService.getCustomers()
         res.status(200).json(customers)
@@ -16,7 +16,7 @@ route.get("/",roleVerify(["user","admin","receptionist","delivery"]) ,async (req
             res.status(500).json({message:error.message})
     }
 })
-route.get("/entry/:id",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/entry/:id",roleVerify(["user","admin","delivery"]) ,async (req,res)=>{
     try {
         console.log(req.query)
         const customers = await customerService.findCustomerEntry(parseFloat(req.params.id))
@@ -32,7 +32,7 @@ route.get("/entry/:id",roleVerify(["user","admin","receptionist","delivery"]) ,a
             res.status(500).json({message:error.message})
     }
 })
-.post("/",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+.post("/",roleVerify(["user","admin"]) ,async (req,res)=>{
     try {
         console.log(req)
         const customer = await customerService.createCustomer(req.body)
@@ -42,7 +42,7 @@ route.get("/entry/:id",roleVerify(["user","admin","receptionist","delivery"]) ,a
             res.status(500).json({message:error.message})
     }
 })
-.put("/:id",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+.put("/:id",roleVerify(["user","admin"]) ,async (req,res)=>{
     try {
         const customer = await customerService.updateCustomer(+req.params.id,req.body)
         res.status(201).json(customer)
@@ -51,7 +51,7 @@ route.get("/entry/:id",roleVerify(["user","admin","receptionist","delivery"]) ,a
             res.status(500).json({message:error.message})
     }
 })
-.delete("/:id",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
+.delete("/:id",roleVerify(["user","admin"]) ,async (req,res)=>{
     try {
         const customer = await customerService.deleteCustomer(+req.params.id)
         res.status(201).json(customer)

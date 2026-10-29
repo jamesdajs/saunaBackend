@@ -11,6 +11,8 @@ export class DetailService extends BaseEntity {
     cant : number
     @Column()
     price : number
+    @Column('boolean', {default: false})
+    paid : boolean
     @CreateDateColumn()
     createAt : Date
     @UpdateDateColumn()

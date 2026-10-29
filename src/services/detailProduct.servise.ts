@@ -10,6 +10,41 @@ export const getDetailsService = async ()=>{
         
     })
 }
+export const getPendingDetailsProduct = async ()=>{
+    const details = await DetailProduct.find({
+        relations:{
+            product:true,
+            entry:{
+                customer:true,
+                details:{
+                    lockers:true
+                }
+            }
+        },
+        where:{state:0},
+        order:{createAt:"ASC"}
+    })
+
+    return details.map(detail => {
+        const lockers = detail.entry.details
+            .flatMap(serviceDetail => serviceDetail.lockers || [])
+            .filter((locker, index, all) =>
+                all.findIndex(item => item.id === locker.id) === index
+            )
+
+        return {
+            id: detail.id,
+            product: detail.product,
+            cant: detail.cant,
+            price: detail.price,
+            state: detail.state,
+            createAt: detail.createAt,
+            entryId: detail.entry.id,
+            customer: detail.entry.customer,
+            lockers
+        }
+    })
+}
 export const findDetailProduct = async (id:number)=>{
     return await DetailProduct.findOne({
         

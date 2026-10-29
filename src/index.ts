@@ -29,14 +29,21 @@ import * as utilService from './services/util.service'
 import path from 'node:path'
 const app = express()
 
-const allowedOrigins = ['http://localhost:4200','http://localhost:4100','*','http://saunaflorida.local:4100'];
-
 cron.schedule('0 1 1 * *', async () => {
     let backup = await utilService.createBackup("default");
     console.log('cada minuto',backup);
 });
 const options: cors.CorsOptions = {
-  origin: allowedOrigins
+  origin: (origin, callback) => {
+    if (!origin ||
+      /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)(:\d+)?$/.test(origin) ||
+      origin === 'http://saunaflorida.local:4100') {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error('Origen no permitido por CORS'));
+  }
 };
 
 app.use(cors(options));

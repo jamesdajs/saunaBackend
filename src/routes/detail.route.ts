@@ -6,7 +6,7 @@ import * as lockerService from "../services/locker.service"
 import * as entryService from "../services/entry.service"
 const route = Router()
 
-route.get("/",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/",roleVerify(["admin","user","delivery"]) ,async (req,res)=>{
     try {
         const categories = await detailService.getDetailsService()
         res.status(200).json(categories)
@@ -16,7 +16,7 @@ route.get("/",roleVerify(["admin","user","receptionist","delivery"]) ,async (req
             res.status(500).json({message:error.message})
     }
 })
-route.get("/:id",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
+route.get("/:id",roleVerify(["admin","user","delivery"]) ,async (req,res)=>{
     try {
         const categories = await detailService.findDetailService(parseInt(req.params.id))
         res.status(200).json(categories)
@@ -26,7 +26,7 @@ route.get("/:id",roleVerify(["admin","user","receptionist","delivery"]) ,async (
             res.status(500).json({message:error.message})
     }
 })
-.post("/",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
+.post("/",roleVerify(["admin","user","delivery"]) ,async (req,res)=>{
     try {
         console.log(req.body)
         let lockers:any = []
@@ -58,7 +58,7 @@ route.get("/:id",roleVerify(["admin","user","receptionist","delivery"]) ,async (
             res.status(500).json({message:error.message})
     }
 })
-.put("/:id",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
+.put("/:id",roleVerify(["admin","user"]) ,async (req,res)=>{
     try {
         const detail = await detailService.updateDetailService(+req.params.id,req.body)
         res.status(201).json(detail)
@@ -67,7 +67,7 @@ route.get("/:id",roleVerify(["admin","user","receptionist","delivery"]) ,async (
             res.status(500).json({message:error.message})
     }
 })
-.delete("/:id",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
+.delete("/:id",roleVerify(["admin","user"]) ,async (req,res)=>{
     try {
         const detail = await detailService.deleteDetailService(+req.params.id)
         res.status(201).json(detail)

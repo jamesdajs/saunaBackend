@@ -11,7 +11,7 @@ WORKDIR /app
 COPY package.json package-lock.json tsconfig.json ./
 
 # Instala las dependencias, incluyendo las de desarrollo para la compilación
-RUN npm install
+RUN npm ci
 
 # Copia todo el código fuente
 COPY . .
@@ -33,7 +33,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # 2. Instala SOLAMENTE las dependencias de producción
-RUN npm install --only=production
+RUN npm ci --omit=dev
 
 # 3. 🚨 CAMBIO AQUÍ: Copia el código compilado de la etapa 'builder'
 #    Desde /app/build (en el builder) hacia ./build (en el contenedor de producción)
