@@ -4,6 +4,7 @@ import {roleVerify} from "../midelwares/auth.midelware"
 import * as productService from "../services/product.service"
 import * as entryService from "../services/entry.service"
 import { DetailProduct } from "../entities/DetailProduct";
+import { notifyPendingProductsChanged } from "../realtime"
 const route = Router()
 
 route.get("/",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
@@ -56,6 +57,7 @@ route.get("/",roleVerify(["admin","user","receptionist","delivery"]) ,async (req
         req.body.product = product
         //console.log(req.body)
         const detail = await detailProductService.createDetailProduct(req.body)
+        notifyPendingProductsChanged()
         console.log(detail)
         res.status(201).json(detail)
     } catch (error) {
@@ -65,7 +67,11 @@ route.get("/",roleVerify(["admin","user","receptionist","delivery"]) ,async (req
 })
 .put("/:id",roleVerify(["admin","user","receptionist","delivery"]) ,async (req,res)=>{
     try {
+        const existingDetail = await detailProductService.findDetailProduct(+req.params.id)
         const detail = await detailProductService.updateDetailProduct(+req.params.id,req.body)
+        if (existingDetail?.state !== detail?.state) {
+            notifyPendingProductsChanged()
+        }
         res.status(201).json(detail)
     } catch (error) {
         if (error instanceof Error) 
@@ -75,6 +81,7 @@ route.get("/",roleVerify(["admin","user","receptionist","delivery"]) ,async (req
 .delete("/:id",roleVerify(["admin","user"]) ,async (req,res)=>{
     try {
         const detail = await detailProductService.deleteDetailProduct(+req.params.id)
+        notifyPendingProductsChanged()
         res.status(201).json(detail)
     } catch (error) {
         if (error instanceof Error) 

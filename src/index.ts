@@ -1,6 +1,7 @@
 import dotenv from "dotenv"
 dotenv.config()
 import express from 'express'
+import { createServer } from "http"
 import {AppDataSource} from "./database/db"
 import userRoute from './routes/user.route'
 import authRoute from './routes/auth.route'
@@ -27,6 +28,7 @@ import "reflect-metadata"
 
 import * as utilService from './services/util.service' 
 import path from 'node:path'
+import { initializeRealtime } from "./realtime"
 const app = express()
 
 cron.schedule('0 1 1 * *', async () => {
@@ -35,9 +37,7 @@ cron.schedule('0 1 1 * *', async () => {
 });
 const options: cors.CorsOptions = {
   origin: (origin, callback) => {
-    if (!origin ||
-      /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)(:\d+)?$/.test(origin) ||
-      origin === 'http://saunaflorida.local:4100') {
+    if (isAllowedOrigin(origin)) {
       callback(null, true);
       return;
     }
@@ -45,6 +45,11 @@ const options: cors.CorsOptions = {
     callback(new Error('Origen no permitido por CORS'));
   }
 };
+function isAllowedOrigin(origin?: string): boolean {
+  return !origin ||
+    /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)(:\d+)?$/.test(origin) ||
+    origin === 'http://saunaflorida.local:4100'
+}
 
 app.use(cors(options));
 const uploadsPath = path.join(process.cwd(), 'public', 'uploads');
@@ -64,6 +69,8 @@ app.use("/api/entries",entryRoute)
 app.use('/api/details',detailRoute)
 app.use('/api/detailproduct',detailProductRoute)
 app.use('/api/reports',reportRoute)
+const httpServer = createServer(app)
+initializeRealtime(httpServer, isAllowedOrigin)
 
 // Ruta para subir imágenes
 async function seedRoles() {
@@ -131,7 +138,7 @@ const main = async ()=>{
         await AppDataSource.initialize()
         await seedRoles()
         await createAdminUser()
-        app.listen(PORT,()=>{
+        httpServer.listen(PORT,()=>{
             console.log("server run in port : " + PORT);
         })
     } catch (error) {

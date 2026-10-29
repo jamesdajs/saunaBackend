@@ -60,6 +60,11 @@ route.get("/:id",roleVerify(["admin","user","receptionist","delivery"]) ,async (
 })
 .put("/:id",roleVerify(["admin","user","receptionist"]) ,async (req,res)=>{
     try {
+        if (req.body.paid !== undefined) {
+            res.status(400).json({message:"El estado de pago solo se puede definir al crear el servicio"})
+            return
+        }
+
         const detail = await detailService.updateDetailService(+req.params.id,req.body)
         res.status(201).json(detail)
     } catch (error) {

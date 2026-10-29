@@ -1,5 +1,7 @@
 import {DetailProduct} from "../entities/DetailProduct"
+import { User } from "../entities/User"
 import { AppDataSource } from "../database/db"
+import * as utils from "./util.service"
 export const getDetailsService = async ()=>{
     return await DetailProduct.find({
         relations:{
@@ -69,6 +71,30 @@ export const getProductoReport = async (date1:Date,date2:Date)=>{
     .groupBy("pr.id")
     .addGroupBy("ca.id")
     .getRawMany() 
+}
+export const getDeliveredUnpaidProductsReport = async (targetDate:Date)=>{
+    const {startOfDay,endOfDay} = utils.getTodayEntriesInLocalTime(targetDate)
+
+    return await AppDataSource.createQueryBuilder()
+    .select('dp.id',"id")
+    .addSelect('e.id',"entryId")
+    .addSelect('pr."name"',"product")
+    .addSelect('cu."name"',"customer")
+    .addSelect('u."name"',"user")
+    .addSelect('dp.cant',"cant")
+    .addSelect('dp.price',"price")
+    .addSelect('dp.cant * dp.price',"total")
+    .addSelect('dp."updateAt"',"deliveredAt")
+    .from("detail_product","dp")
+    .innerJoin("entry","e",'e.id = dp."entryId"')
+    .innerJoin("product","pr",'pr.id = dp."productId"')
+    .innerJoin("customer","cu",'cu.id = e."customerId"')
+    .leftJoin(User,"u",'u.id = e."userId"')
+    .where("dp.state = :state",{state:1})
+    .andWhere('dp."updateAt" BETWEEN :startOfDay AND :endOfDay',{startOfDay,endOfDay})
+    .orderBy('dp."updateAt"',"ASC")
+    .addOrderBy("dp.id","ASC")
+    .getRawMany()
 }
 export const createDetailProduct = async (data:DetailProduct)=>{
     const detailProduct = await DetailProduct.create(data)

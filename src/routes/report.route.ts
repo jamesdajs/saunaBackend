@@ -62,6 +62,21 @@ route.get("/customer",roleVerify(["user","admin"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
+route.get("/delivered-unpaid/:day",roleVerify(["user","admin"]) ,async (req,res)=>{
+    try {
+        const targetDate = new Date(`${req.params.day}T12:00:00`)
+        if (Number.isNaN(targetDate.getTime())) {
+            res.status(400).json({message:"Fecha inválida"})
+            return
+        }
+
+        const products = await detailProductService.getDeliveredUnpaidProductsReport(targetDate)
+        res.status(200).json(products)
+    } catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({message:error.message})
+    }
+})
 route.get("/service",roleVerify(["user","admin"]) ,async (req,res)=>{
     console.log(req.query);
     try {

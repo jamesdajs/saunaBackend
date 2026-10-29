@@ -18,7 +18,7 @@ export class DetailProduct extends BaseEntity {
     @UpdateDateColumn()
     updateAt : Date
 
-    @ManyToOne(()=> Entry,(entry)=>entry.details)
+    @ManyToOne(()=> Entry,(entry)=>entry.detailsProduct)
     entry :Entry
     @ManyToOne(()=> Product,(product)=>product.details)
     product :Product

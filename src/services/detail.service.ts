@@ -33,24 +33,29 @@ export const getServiceReport = async (date1:Date,date2:Date)=>{
     .getRawMany() 
 }
 export const createDetailService = async (data:DetailService)=>{
-    const detailServiceService = await DetailService.create(data)
-    await detailServiceService.save()
-    return detailServiceService
-}
-export const updateDetailService = async (id:number,data:DetailService)=>{
-    let detailServiceService = await findDetailService(id)
-    if (detailServiceService){
-        if (data.paid !== undefined && data.paid !== detailServiceService.paid) {
-            const amount = detailServiceService.price * detailServiceService.cant
-            const difference = data.paid ? amount : -amount
-            const currentPaid = Number(detailServiceService.entry.paid || 0)
+    return await AppDataSource.transaction(async (manager) => {
+        const detailService = manager.create(DetailService, data)
+        await manager.save(detailService)
 
-            await Entry.update(
-                {id: detailServiceService.entry.id},
-                {paid: currentPaid + difference}
+        if (detailService.paid) {
+            await manager.increment(
+                Entry,
+                { id: detailService.entry.id },
+                "paid",
+                detailService.price * detailService.cant
             )
         }
 
+        return detailService
+    })
+}
+export const updateDetailService = async (id:number,data:DetailService)=>{
+    if (data.paid !== undefined) {
+        throw new Error("El estado de pago solo se puede definir al crear el servicio")
+    }
+
+    let detailServiceService = await findDetailService(id)
+    if (detailServiceService){
         await DetailService.update({ id }, data)
         return await findDetailService(id)
     }else throw new Error("categoria no encontrado")
