@@ -3,7 +3,7 @@ import * as lockerService from "../services/locker.service"
 import {roleVerify} from "../midelwares/auth.midelware"
 const route = Router()
 
-route.get("/",roleVerify(["user","admin","delivery"]) ,async (req,res)=>{
+route.get("/",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const lockers = await lockerService.getLockers()
         res.status(200).json(lockers)
@@ -12,7 +12,7 @@ route.get("/",roleVerify(["user","admin","delivery"]) ,async (req,res)=>{
             res.status(500).json({message:error.message})
     }
 })
-route.get("/list/:state",roleVerify(["user","admin","delivery"]) ,async (req,res)=>{
+route.get("/list/:state",roleVerify(["user","admin","receptionist","delivery"]) ,async (req,res)=>{
     try {
         const lockers = await lockerService.getLockers({taken:req.params.state == "true",state:true})
         res.status(200).json(lockers)
